@@ -10,6 +10,6 @@ class User extends Authenticatable
     use HasFactory;
 
     protected $fillable = [
-        'cedula', 'nombre', 'apellidos', 'numero_telefonico',
+        'cedula', 'nombre', 'apellido1', 'apellido2', 'numero_telefonico',
     ];
 };

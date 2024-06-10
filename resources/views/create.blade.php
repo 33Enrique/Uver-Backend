@@ -29,14 +29,21 @@
             @enderror
         </div>
         <div>
-            <label for="apellidos">Apellidos:</label>
-            <input type="text" id="apellidos" name="apellidos" value="{{ old('apellidos') }}">
-            @error('apellidos')
+            <label for="apellido1">Primer apellido:</label>
+            <input type="text" id="apellido1" name="apellido1" value="{{ old('apellido1') }}">
+            @error('apellido1')
                 <div>{{ $message }}</div>
             @enderror
         </div>
         <div>
-            <label for="numero_telefonico">Número Telefónico:</label>
+            <label for="apellido2">Segundo apellido:</label>
+            <input type="text" id="apellido2" name="apellido2" value="{{ old('apellido2') }}">
+            @error('apellido2')
+                <div>{{ $message }}</div>
+            @enderror
+        </div>
+        <div>
+            <label for="numero_telefonico">Número telefónico:</label>
             <input type="text" id="numero_telefonico" name="numero_telefonico" value="{{ old('numero_telefonico') }}">
             @error('numero_telefonico')
                 <div>{{ $message }}</div>
