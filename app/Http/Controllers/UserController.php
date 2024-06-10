@@ -9,7 +9,7 @@ class UserController extends Controller
 {
     public function create()
     {
-        return view('create');
+        return view('users.create');
     }
 
     public function store(Request $request)
