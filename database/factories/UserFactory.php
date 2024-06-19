@@ -2,8 +2,9 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class UserFactory extends Factory
 {
@@ -14,8 +15,9 @@ class UserFactory extends Factory
         return [
             'cedula' => $this->faker->unique()->numerify('##########'),
             'nombre' => $this->faker->firstName,
-            'apellidos' => $this->faker->lastName,
-            'numero_telefonico' => $this->faker->phoneNumber,
+            'apellido1' => $this->faker->lastName,
+            'apellido2' => $this->faker->lastName,
+            'numero_telefonico' => $this->faker->numerify('########'),
         ];
     }
 };
