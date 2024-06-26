@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('nombre');
             $table->string('apellido1');
             $table->string('apellido2');
-            $table->string('numero_telefonico');
+            $table->string('numero_telefonico')->unique();
             $table->timestamps();
         });
     }

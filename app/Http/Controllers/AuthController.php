@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\VerificationCode;
 use Twilio\Rest\Client;
 use Illuminate\Support\Facades\Hash;
 
@@ -18,8 +19,10 @@ class AuthController extends Controller
         $user = User::where('numero_telefonico', $request->numero_telefonico)->first();
         $verificationCode = rand(100000, 999999);
 
-        session(['verification_code' => $verificationCode]);
-        session(['numero_telefonico' => $request->numero_telefonico]);
+        VerificationCode::create([
+            'numero_telefonico' => $request->numero_telefonico,
+            'code' => $verificationCode,
+        ]);
 
         $phoneNumber = '+506' . substr($request->numero_telefonico, -8);
 
@@ -33,27 +36,25 @@ class AuthController extends Controller
     }
 
     public function verifyCode(Request $request)
-{
-    $request->validate([
-        'verification_code' => 'required|numeric',
-    ]);
+    {
+        $request->validate([
+            'verification_code' => 'required|numeric',
+        ]);
 
-    $storedCode = session('verification_code');
-    $numeroTelefonico = session('numero_telefonico');
+        $verificationRecord = VerificationCode::where('code', $request->verification_code)->latest()->first();
 
-    if (!$storedCode || !$numeroTelefonico) {
-        return response()->json(['error' => 'No se encontró la sesión de verificación.'], 401);
-    }
+        if (!$verificationRecord) {
+            return response()->json(['error' => 'Código de verificación incorrecto.'], 401);
+        }
 
-    if ($request->verification_code == $storedCode) {
-        session()->forget(['verification_code', 'numero_telefonico']);
+        $user = User::where('numero_telefonico', $verificationRecord->numero_telefonico)->first();
+        if (!$user) {
+            return response()->json(['error' => 'Usuario no encontrado.'], 404);
+        }
 
-        $user = User::where('numero_telefonico', $numeroTelefonico)->first();
         auth()->login($user);
+        $verificationRecord->delete();
 
         return response()->json(['message' => 'Inicio de sesión exitoso.'], 200);
-    } else {
-        return response()->json(['error' => 'Código de verificación incorrecto.'], 401);
     }
-}
 };
